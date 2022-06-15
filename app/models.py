@@ -1,8 +1,14 @@
-from app import db
+from app import db, loginManager
+from flask_login import UserMixin
 
 # Model <-> Tabla <-> Class
 
-class User(db.Model):
+@loginManager.user_loader
+def load_user(id):
+	return User.query.get(int(id))
+
+
+class User(db.Model, UserMixin):
 	__tablename__ = "users"
 
 	id = db.Column(db.Integer, primary_key=True)
@@ -18,4 +24,5 @@ class User(db.Model):
 		return f"USER {self.id} : {self.name}" # format-string
 
 
-db.create_all()
+# TODO: Arreglar
+# db.create_all()

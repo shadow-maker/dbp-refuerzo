@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 #
 # SE INSTANCIA APP
@@ -25,6 +26,8 @@ db = SQLAlchemy(app)
 
 # Se crea instancia (objecto) de Migrate
 migrate = Migrate(app, db)
+
+loginManager = LoginManager(app)
 
 #
 # IMPORT MODULES

@@ -10,19 +10,19 @@
 
 * ~~Organizacion de una Web App con Flask~~
 * ~~Elegir un proyecto a trabajar~~
-* Setup
-	* Setup de Python
+* ~~Setup~~
+	* ~~Setup de Python~~
 		* ~~Python virtual environment~~
 		* ~~Instalacion de pip packages~~
 		* ~~Uso del interactive interpreter~~
-	* Setup de GIT
-	* Setup de Postgres
+	* ~~Setup de GIT~~
+	* ~~Setup de Postgres~~
 * Intro
-	* Creacion de app Flask con route simple
-	* Conexion de base de datos Postgres
-	* Creacion de tabla de usuario simple
-	* Separar proyecto en archivos para models y routes
-	* Creacion de folder de templates y archivos static
+	* ~~Creacion de app Flask con route simple~~
+	* ~~Conexion de base de datos Postgres~~
+	* ~~Creacion de tabla de usuario simple~~
+	* ~~Separar proyecto en archivos para models y routes~~
+	* ~~Creacion de folder de templates y archivos static~~
 	* Mostrar usuarios en un route usando templates
 	* Mostrar usuarios en un route usando JSON
 * Manejo de usuarios
