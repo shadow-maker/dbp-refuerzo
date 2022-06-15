@@ -10,7 +10,7 @@ def index():
 @app.route("/users")
 def users():
 	return render_template("users.html",
-		users=[] # TODO
+		users=User.query.all()
 	)
 
 @app.route("/login")

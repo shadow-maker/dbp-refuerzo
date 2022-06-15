@@ -24,5 +24,4 @@ class User(db.Model, UserMixin):
 		return f"USER {self.id} : {self.name}" # format-string
 
 
-# TODO: Arreglar
-# db.create_all()
+db.create_all()
