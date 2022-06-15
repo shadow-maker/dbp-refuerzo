@@ -1,4 +1,4 @@
-from app import db, loginManager
+from app import db, loginManager, bcrypt
 from flask_login import UserMixin
 
 # Model <-> Tabla <-> Class
@@ -13,11 +13,16 @@ class User(db.Model, UserMixin):
 
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	email = db.Column(db.String(64), unique=True)
+	email = db.Column(db.String(32), nullable=False, unique=True)
+	password = db.Column(db.String(64), nullable=False)
 
-	def __init__(self, name, email):
+	def __init__(self, name, email, password):
 		self.name = name
 		self.email = email
+		self.password = bcrypt.generate_password_hash(password).decode("utf-8")
+
+	def check_password(self, password):
+		return bcrypt.check_password_hash(self.password, password)
 	
 	def __repr__(self):
 		#return "USER" + self.id + " : " + self.name
