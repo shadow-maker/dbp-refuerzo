@@ -1,7 +1,7 @@
 from app import app
 from app.models import Brand, Product
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 #
 # API ROUTES
@@ -11,12 +11,21 @@ api_blueprint = Blueprint("api", __name__, url_prefix="/api")
 
 @api_blueprint.route("/brands")
 def apiBrands():
+	page = request.args.get("page", 1, type=int)
+	query = Brand.query.paginate(per_page=2, page=page)
+
 	brands = [{
 		"id": b.id,
 		"name": b.name,
 		"country": b.country
-	} for b in Brand.query.all()]
-	return {"brands": brands}
+	} for b in query.items]
+
+	return {
+		"brands": brands,
+		"page": query.page,
+		"pages": query.pages,
+		"total": query.total
+	}
 
 @api_blueprint.route("/brands/<id>")
 def apiBrand(id):
@@ -32,6 +41,9 @@ def apiBrand(id):
 
 @api_blueprint.route("/products")
 def apiProducts():
+	page = request.args.get("page", 1, type=int)
+	query = Product.query.paginate(per_page=2, page=page)
+
 	products = [{
 		"id": p.id,
 		"name": p.name,
@@ -42,8 +54,14 @@ def apiProducts():
 		"price": float(p.price),
 		"stock": p.stock,
 		"year": p.year,
-	} for p in Product.query.all()]
-	return {"products": products}
+	} for p in query.items]
+
+	return {
+		"products": products,
+		"page": query.page,
+		"pages": query.pages,
+		"total": query.total
+	}
 
 @api_blueprint.route("/products/<id>")
 def apiProduct(id):
