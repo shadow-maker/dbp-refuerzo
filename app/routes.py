@@ -1,5 +1,6 @@
+from crypt import methods
 from app import app, db
-from app.models import User
+from app.models import User, Brand, ProductCategory, ProductCondition, Product
 
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user
@@ -60,3 +61,33 @@ def logout():
 		return redirect(url_for("login"))
 	logout_user()
 	return redirect(url_for("index"))
+
+@app.route("/products/create", methods=["GET", "POST"])
+def createProduct():
+	if request.method == "POST":
+		try:
+			p = Product(
+				int(request.form.get("brand")),
+				current_user.id,
+				request.form.get("name"),
+				float(request.form.get("price")),
+				int(request.form.get("stock")),
+				int(request.form.get("year")),
+				bool(request.form.get("freeshipping")),
+				ProductCategory(int(request.form.get("category"))),
+				ProductCondition(int(request.form.get("condition")))
+			)
+			db.session.add(p)
+			db.session.commit()
+			flash("Product created!", "success")
+		except:
+			flash("Error creating product", "danger")
+		finally:
+			db.session.rollback()
+
+	return render_template("createProduct.html",
+		title="Create Product",
+		brands=Brand.query.all(),
+		categories=list(ProductCategory),
+		conditions=list(ProductCondition)
+	)

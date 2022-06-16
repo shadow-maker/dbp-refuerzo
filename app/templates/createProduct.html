@@ -1,0 +1,65 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Create product</h1>
+
+<div class="container col-6">
+	<form method="POST">
+		<div class="mb-3">
+			<label for="name" class="form-label">Name:</label>
+			<input type="text" name="name" id="name" class="form-control" required>
+		</div>
+	
+		<div class="mb-3">
+			<label for="brand" class="form-label">Brand:</label>
+			<select name="brand" class="form-select">
+				{% for brand in brands %}
+					<option value="{{brand.id}}">{{brand.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="price" class="form-label">Price:</label>
+			<input type="number" name="price" id="price" class="form-control" step="0.01" required>
+		</div>
+
+		<div class="mb-3">
+			<label for="category" class="form-label">Category:</label>
+			<select name="category" class="form-select">
+				{% for category in categories %}
+					<option value="{{category.value}}">{{category.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="condition" class="form-label">Condition:</label>
+			<select name="condition" class="form-select">
+				{% for condition in conditions %}
+					<option value="{{condition.value}}">{{condition.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label for="stock" class="form-label">Stock available:</label>
+			<input type="number" name="stock" id="stock" class="form-control" step="1" min="1" value=1 required>
+		</div>
+
+		<div class="mb-3">
+			<label for="year" class="form-label">Fab year:</label>
+			<input type="number" name="year" id="year" class="form-control" step="1" min="1000">
+		</div>
+
+		<div class="form-check mb-3">
+			<input class="form-check-input" type="checkbox" value="" name="freeshipping" id="freeshipping">
+			<label class="form-check-label" for="freeshipping">
+				Free shipping
+			</label>
+		</div>
+	
+		<input type="submit" value="Submit" class="btn btn-primary">
+	</form>
+</div>
+{% endblock %}
