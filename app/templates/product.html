@@ -1,0 +1,47 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Product details</h1>
+
+<h2>{{product.name}}</h2>
+
+<h3>${{product.price}}</h3>
+
+<br>
+
+<div class="row">
+	<div class="col-3 h4">Brand</div>
+	<div class="col-9 fs-4">{{product.brand.name}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Seller email</div>
+	<div class="col-9 fs-5">{{product.user.email}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Stock</div>
+	<div class="col-9 fs-5">{{product.stock}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Condition</div>
+	<div class="col-9 fs-5">{{product.condition.name}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Category</div>
+	<div class="col-9 fs-5">{{product.category.name}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Fab Year</div>
+	<div class="col-9 fs-5">{{product.year}}</div>
+</div>
+
+<div class="row">
+	<div class="col-3 h5">Free shipping</div>
+	<div class="col-9 fs-5">{% if product.freeshipping %}Yes{% else %}No{% endif %}</div>
+</div>
+
+{% endblock %}

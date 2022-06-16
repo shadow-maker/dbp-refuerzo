@@ -76,7 +76,7 @@ class Product(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	brand_id = db.Column(db.Integer, db.ForeignKey("brands.id"), nullable=False)
 	user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-	name = db.Column(db.String(32), nullable=False)
+	name = db.Column(db.String(64), nullable=False)
 	price = db.Column(db.Numeric(8, 2), nullable=False)
 	stock = db.Column(db.Integer, nullable=False)
 	year = db.Column(db.Integer, nullable=False, default=date.today().year)

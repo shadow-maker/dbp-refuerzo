@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Products</h1>
+
+{% for product in products %}
+<div class="card mb-3">
+	<a class="card-body text-decoration-none text-body" href="{{url_for('viewProduct', id=product.id)}}">
+		<h4 class="card-title">{{product.name}}</h4>
+		<h5>{{product.brand.name}}</h5>
+		<h6>${{product.price}}</h6>
+	</a>
+</div>
+{% endfor %}
+
+{% endblock %}

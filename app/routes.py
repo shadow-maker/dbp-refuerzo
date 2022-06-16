@@ -61,10 +61,27 @@ def logout():
 	logout_user()
 	return redirect(url_for("index"))
 
+
+@app.route("/products")
+def viewProducts():
+	return render_template("products.html",
+		title="Products",
+		products=Product.query.all()
+	)
+
+@app.route("/products/<id>")
+def viewProduct(id):
+	p = Product.query.get(id)
+	if not p:
+		flash("Product not found", "danger")
+		return redirect(url_for("viewProducts"))
+	return render_template("product.html", title="Product",	product=p)
+
 @app.route("/products/create", methods=["GET", "POST"])
 @login_required
 def createProduct():
 	if request.method == "POST":
+		print(request.form.get("freeshipping"))
 		try:
 			p = Product(
 				int(request.form.get("brand")),
@@ -73,7 +90,7 @@ def createProduct():
 				float(request.form.get("price")),
 				int(request.form.get("stock")),
 				int(request.form.get("year")),
-				bool(request.form.get("freeshipping")),
+				bool(request.form.get("freeshipping")), # TODO: arreglar
 				ProductCategory(int(request.form.get("category"))),
 				ProductCondition(int(request.form.get("condition")))
 			)
