@@ -1,5 +1,5 @@
-from email.policy import default
 from app import db, loginManager, bcrypt
+from flask import flash, redirect, url_for
 from flask_login import UserMixin
 
 from enum import Enum
@@ -10,6 +10,12 @@ from datetime import date
 @loginManager.user_loader
 def load_user(id):
 	return User.query.get(int(id))
+
+
+@loginManager.unauthorized_handler
+def unauthorized():
+	flash("You need to log in first", "warning")
+	return redirect(url_for("login"))
 
 
 class User(db.Model, UserMixin):

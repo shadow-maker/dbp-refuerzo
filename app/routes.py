@@ -3,7 +3,7 @@ from app import app, db
 from app.models import User, Brand, ProductCategory, ProductCondition, Product
 
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route("/")
 def index():
@@ -56,13 +56,13 @@ def login():
 	return render_template("login.html", title="Login")
 
 @app.route("/logout")
+@login_required
 def logout():
-	if not current_user.is_authenticated:
-		return redirect(url_for("login"))
 	logout_user()
 	return redirect(url_for("index"))
 
 @app.route("/products/create", methods=["GET", "POST"])
+@login_required
 def createProduct():
 	if request.method == "POST":
 		try:
@@ -80,7 +80,8 @@ def createProduct():
 			db.session.add(p)
 			db.session.commit()
 			flash("Product created!", "success")
-		except:
+		except Exception as e:
+			print(e)
 			flash("Error creating product", "danger")
 		finally:
 			db.session.rollback()
