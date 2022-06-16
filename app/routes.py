@@ -1,9 +1,15 @@
-from crypt import methods
 from app import app, db
+from app.api import api_blueprint
 from app.models import User, Brand, ProductCategory, ProductCondition, Product
 
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
+
+app.register_blueprint(api_blueprint)
+
+#
+# VIEW ROUTES
+#
 
 @app.route("/")
 def index():
