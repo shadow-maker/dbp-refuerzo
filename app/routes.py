@@ -1,7 +1,7 @@
 from app import app, db
 from app.models import User
 
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user
 
 @app.route("/")
@@ -31,7 +31,7 @@ def signup():
 			db.session.add(u)
 			db.session.commit()
 		except:
-			return "Error"
+			flash("Error creating user", "danger")
 
 	return render_template("signup.html", title="Signup")
 
@@ -43,14 +43,14 @@ def login():
 	if request.method == "POST":
 		u = User.query.filter_by(email=request.form["email"]).first()
 
-		if u is None:
-			return "User not found"
-
-		if not u.check_password(request.form["password"]):
-			return "Wrong password"
-
-		login_user(u)
-		return redirect(url_for("index"))
+		if u:
+			if u.check_password(request.form["password"]):
+				login_user(u)
+				return redirect(url_for("index"))
+			else:
+				flash("Wrong password", "danger")
+		else:
+			flash("User with this email does not exist", "danger")
 
 	return render_template("login.html", title="Login")
 
