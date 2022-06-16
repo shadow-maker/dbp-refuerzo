@@ -12,6 +12,7 @@ def index():
 @app.route("/users")
 def users():
 	return render_template("users.html",
+		title="Users",
 		users=User.query.all()
 	)
 
@@ -32,7 +33,7 @@ def signup():
 		except:
 			return "Error"
 
-	return render_template("signup.html")
+	return render_template("signup.html", title="Signup")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -51,7 +52,7 @@ def login():
 		login_user(u)
 		return redirect(url_for("index"))
 
-	return render_template("login.html")
+	return render_template("login.html", title="Login")
 
 @app.route("/logout")
 def logout():

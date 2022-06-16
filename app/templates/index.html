@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tienda - Index</title>
-</head>
-<body>
-	<h1>Home de la tienda {{var}}</h1>
-	<h2>{{current_user.is_authenticated}}</h2>
-	<p>
-		Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque quod repellendus distinctio numquam magnam maxime assumenda eius laborum soluta aut consectetur aspernatur quis, ipsa quae asperiores iure! Nobis, laboriosam itaque?
-	</p>
-</body>
-</html>
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Home de la tienda {{var}}</h1>
+<h2>{{current_user.is_authenticated}}</h2>
+<p>
+	Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque quod repellendus distinctio numquam magnam maxime assumenda eius laborum soluta aut consectetur aspernatur quis, ipsa quae asperiores iure! Nobis, laboriosam itaque?
+</p>
+{% endblock %}
