@@ -1,16 +1,73 @@
 {% extends "master.html" %}
 
 {% block content %}
-<h1>Products</h1>
-
-{% for product in products %}
-<div class="card mb-3">
-	<a class="card-body text-decoration-none text-body" href="{{url_for('viewProduct', id=product.id)}}">
-		<h4 class="card-title">{{product.name}}</h4>
-		<h5>{{product.brand.name}}</h5>
-		<h6>${{product.price}}</h6>
-	</a>
+<div class="d-flex justify-content-between">
+	<span class="h1">Products</span>
+	<div id="loading" class="spinner-border d-none" role="status">
+		<span class="visually-hidden">Loading...</span>
+	</div>
 </div>
-{% endfor %}
+
+<div class="container" id="productsContainer"></div>
+
+<div id="pageButtons" class="btn-group" role="group">
+</div>
+
+<div id="templates" class="d-none">
+	<div class="product-item card mb-3">
+		<a class="link card-body text-decoration-none text-body" href="">
+			<h4 class="name card-title"></h4>
+			<h5 class="brand"></h5>
+			<h6 class="price"></h6>
+		</a>
+	</div>
+	<button type="button" class="page-btn btn btn-primary" onclick=""></button>
+</div>
+
+<script>
+	const container = document.getElementById("productsContainer")
+
+	function requestResults(page=1) {
+		document.getElementById("loading").classList.remove("d-none")
+		container.innerHTML = ""
+		document.getElementById("pageButtons").innerHTML = ""
+
+		fetch("/api/products?" + new URLSearchParams({
+			page: page
+		}), {
+			method: "GET"
+		}).then(response => {
+			document.getElementById("loading").classList.add("d-none")
+			if (response.status != 200)
+				return {
+					"error": response.status
+				}
+			else
+				return response.json()
+		}).then(data => {
+			if (data.error) {} else {
+				for (let product of data.products) {
+					let element = document.getElementById("templates").getElementsByClassName("product-item")[0].cloneNode(true)
+					element.getElementsByClassName("link")[0].href = "/products/" + product.id
+					element.getElementsByClassName("name")[0].innerText = product.name
+					element.getElementsByClassName("brand")[0].innerText = product.brand_name
+					element.getElementsByClassName("price")[0].innerText = product.price
+					container.appendChild(element)
+				}
+
+				for (let i = 0; i < data.pages; i++) {
+					let page = document.getElementById("templates").getElementsByClassName("page-btn")[0].cloneNode(true)
+					
+					page.innerText = i + 1
+					page.setAttribute("onclick", "requestResults(" + (i + 1) + ")")
+
+					document.getElementById("pageButtons").appendChild(page)
+				}
+			}
+		})
+	}
+
+	requestResults()
+</script>
 
 {% endblock %}

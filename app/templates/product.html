@@ -21,7 +21,7 @@
 
 <div class="row">
 	<div class="col-3 h5">Stock</div>
-	<div class="col-9 fs-5">{{product.stock}}</div>
+	<div class="col-9 fs-5" id="stock">{{product.stock}}</div>
 </div>
 
 <div class="row">
@@ -43,5 +43,32 @@
 	<div class="col-3 h5">Free shipping</div>
 	<div class="col-9 fs-5">{% if product.freeshipping %}Yes{% else %}No{% endif %}</div>
 </div>
+
+{% if current_user.is_authenticated and product.user_id != current_user.id %}
+<div class="btn btn-primary" id="btnBuyProduct">
+	Buy product
+</div>
+{% endif %}
+
+<script>
+	let id = "{{product.id}}"
+	let button = document.getElementById("btnBuyProduct")
+	button.addEventListener("click", () => {
+		fetch("/api/products/" + id + "/buy", {
+			method: "POST"
+		}).then(response => {
+			if (response.status != 200)
+				return {"error": response.status}
+			else
+				return response.json()
+		}).then(data => {
+			console.log(data)
+			if (data.error)
+				alert(data.error)
+			else
+				document.getElementById("stock").innerHTML = data.stock
+		})
+	})
+</script>
 
 {% endblock %}

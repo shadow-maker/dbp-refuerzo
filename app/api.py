@@ -1,7 +1,10 @@
-from app import app
+from app import db
 from app.models import Brand, Product
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
+from flask_login import current_user
+
+import time
 
 #
 # API ROUTES
@@ -42,12 +45,15 @@ def apiBrand(id):
 @api_blueprint.route("/products")
 def apiProducts():
 	page = request.args.get("page", 1, type=int)
-	query = Product.query.paginate(per_page=2, page=page)
+	query = Product.query.paginate(per_page=3, page=page)
+
+	time.sleep(1)
 
 	products = [{
 		"id": p.id,
 		"name": p.name,
 		"brand_id": p.brand_id,
+		"brand_name": p.brand.name,
 		"seller_id": p.user_id,
 		"category": p.category.name,
 		"condition": p.condition.name,
@@ -78,4 +84,23 @@ def apiProduct(id):
 		"price": float(p.price),
 		"stock": p.stock,
 		"year": p.year,
+	}
+
+@api_blueprint.route("/products/<id>/buy", methods=["POST"])
+def apiBuyProduct(id):
+	p = Product.query.get(id)
+	if not p:
+		return {"error": "Product not found"}, 404 # 404 Not Found
+	if p.user_id == current_user.id:
+		return {"error": "You are the seller of this product"}, 403
+	if p.stock < 1:
+		return {"error": "This product is out of stock"}, 400
+	try:
+		p.stock -= 1
+		db.session.commit()
+	except:
+		return {"error": "Error buying product"}, 500
+	return {
+		"success": "Product bought",
+		"stock": p.stock
 	}
